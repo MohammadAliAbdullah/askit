@@ -857,11 +857,11 @@ function App() {
                                     </ul>
                                     <a className="meta-answer meta-answer-a" href="https://2code.info/demo/themes/Discy/Main/question/does-google-force-employees-who-have-offers-from-facebook-to-leave-immediately/#respond">Answer</a>
                                   </footer>
-                                </div>{/* End question-content-second */}
+                                </div>
                                 <div className="clearfix" />
-                              </div>{/* End question-inner */}
-                            </div>{/* End single-inner-content */}
-                          </article>{/* End article */}
+                              </div>
+                            </div>
+                          </article>
                           <article id="post-113" className="article-question article-post clearfix question-answer-before question-vote-inside question-with-comments answer-question-not-jquery question-vote-image discoura-not-credential question-type-normal post-113 question type-question status-publish hentry question-category-language question_tags-french question_tags-language">
                             <div className="single-inner-content">
                               <div className="question-inner">
@@ -881,7 +881,7 @@ function App() {
                                     <li className="question-vote-down"><a href="https://2code.info/demo/themes/Discy/Main/#" id="question_vote_down-113" data-type="question" data-vote-type="down" className="wpqa_vote question_vote_down vote_allow" title="Dislike"><i className="icon-down-dir" /></a>
                                     </li>
                                   </ul>
-                                </div>{/* End question-image-vote */}
+                                </div>
                                 <div className="question-content question-content-first">
                                   <header className="article-header">
                                     <div className="question-header">
@@ -898,7 +898,7 @@ function App() {
                                       French expression: “il faut d’abord apprendre à
                                       marcher avant de courir”?</a></h2>
                                   </div>
-                                </div>{/* End question-content-first */}
+                                </div>
                                 <div className="question-not-mobile question-image-vote question-vote-sticky">
                                   <div className="question-sticky-stop">
                                     <ul className="question-vote">
@@ -908,8 +908,8 @@ function App() {
                                       <li className="li_loader"><span className="loader_3 fa-spin" /></li>
                                       <li className="question-vote-down"><a href="https://2code.info/demo/themes/Discy/Main/#" id="question_vote_down-113" data-type="question" data-vote-type="down" className="wpqa_vote question_vote_down vote_allow" title="Dislike"><i className="icon-down-dir" /></a></li>
                                     </ul>
-                                  </div>{/* End question-sticky */}
-                                </div>{/* End question-image-vote */}
+                                  </div>
+                                </div>
                                 <div className="question-content question-content-second">
                                   <div className="post-wrap-content">
                                     <div className="question-content-text">
@@ -919,7 +919,7 @@ function App() {
                                           a less literal translation that is perhaps more
                                           appealing to an English-speaking audience?
                                         </p>
-                                      </div>{/* End all_not_single_post_content */}
+                                      </div>
                                     </div>
                                     <div className="tagcloud">
                                       <div className="question-tags"><i className="icon-tags" /><a href="https://2code.info/demo/themes/Discy/Main/question-tag/french/">french</a><a href="https://2code.info/demo/themes/Discy/Main/question-tag/language/">language</a>
@@ -938,21 +938,21 @@ function App() {
                                     </ul>
                                     <a className="meta-answer meta-answer-a" href="https://2code.info/demo/themes/Discy/Main/question/is-there-an-english-equivalent-to-the-french-expression-il-faut-dabord-apprendre-a-marcher-avant-de-courir/#respond">Answer</a>
                                   </footer>
-                                </div>{/* End question-content-second */}
+                                </div>
                                 <div className="clearfix" />
-                              </div>{/* End question-inner */}
-                            </div>{/* End single-inner-content */}
-                          </article>{/* End article */}
-                        </div>{/* End post-articles */}
+                              </div>
+                            </div>
+                          </article>
+                        </div>
                         <div className="clearfix" />
                         <div className="pagination-wrap pagination-question">
                           <div className="pagination-nav posts-load-more">
                             <span className="load_span"><span className="loader_2" /></span>
                             <div className="load-more"><a href="https://2code.info/demo/themes/Discy/Main/page/2/">Load More
                               Questions</a></div>
-                          </div>{/* End pagination-nav */}
+                          </div>
                         </div>
-                      </section>{/* End section */}
+                      </section>
                     </div>
                     <div className="hide-main-inner" />
                     <div className="hide-sidebar sidebar-width">
