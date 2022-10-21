@@ -1,1 +1,3 @@
-// auth config
+module.exports = {
+    secret: "abdullah-secret-key"
+}
