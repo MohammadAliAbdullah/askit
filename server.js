@@ -1,30 +1,24 @@
 const express = require('express');
-const bodyParser = require('body-parser')
 const app = express();
-// Make sure you place body-parser before your CRUD handlers!
-app.use(bodyParser.urlencoded({ extended: true }))
-import { MongoClient } from 'mongodb';
-const MongoClient = require('mongodb').MongoClient
-// Enable command monitoring for debugging
-const client = new MongoClient('mongodb://localhost:27017', { monitorCommands: true });
+const PORT = process.env.PORT || 6000;
 
-client.on('commandStarted', started => console.log(started));
-client.db().collection('pets');
-await client.insertOne({ name: 'spot', kind: 'dog' });
+// parse requests of content-type - application/json
+app.use(express.json());
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
-  // Note: __dirname is the current directory you're in. Try logging it and see what you get!
-  // Mine was '/Users/zellwk/Projects/demo-repos/crud-express-mongo' for this app.
+// database connection 
+const mongoose = require('mongoose');
+const url = 'mongodb://localhost:27017/islamiFlow';
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  // useFindAndModify: false
 })
+  .then(() => { console.log('connection successfull') })
+  .catch(() => { console.log('connection successfull') })
 
-app.post('/quotes', (req, res) => {
-  console.log(req.body)
-})
-
-app.listen(4000, function () {
-  console.log('listening on 4000')
-})
-
-
-
+// listen port 
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
