@@ -1,6 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 7000;
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -16,7 +17,7 @@ mongoose.connect(url, {
   // useFindAndModify: false
 })
   .then(() => { console.log('connection successfull') })
-  .catch(() => { console.log('connection successfull') })
+  .catch(() => { console.log('connection Failed') })
 
 // listen port 
 app.listen(PORT, () => {
