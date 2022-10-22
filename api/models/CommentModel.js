@@ -1,11 +1,11 @@
 module.exports = (mongoose) => {
-    //Answer Schema
-    var answerSchema = mongoose.Schema(
+    //comment Schema
+    var commentSchema = mongoose.Schema(
         {
-            description: String,
-            questionId: {
+            description: { type: String, require: true },
+            answerId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Question',
+                ref: 'Answer',
                 require: true
             },
             activeStatus: Boolean,
@@ -22,6 +22,6 @@ module.exports = (mongoose) => {
         object.id = _id;
         return object;
     });
-    const answer = mongoose.model('Answer', answerSchema);
-    return answer;
+    const comment = mongoose.model('Comment', commentSchema);
+    return comment;
 }
