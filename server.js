@@ -9,9 +9,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // database connection 
-const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/islamiFlow';
-mongoose.connect(url, {
+const db = require('./api/models');
+db.mongoose.connect(db.url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   // useFindAndModify: false 

@@ -1,21 +1,20 @@
-const mongoose = require("mongoose");
-
-const Tag = mongoose.model("Tag",
-    new mongoose.Schema({
-        name: String,
-        activeStatus: Boolean,
-        createdAt: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    },
-        { timestamps: true })
-);
-
-Role.method("toJSON", function () {
-    const { __v, _id, ...object } = this.toObject();
-    object.id = _id;
-    return object;
-});
-
-module.exports = Tag;
+module.exports = (mongoose) => {
+    var tagSchema = mongoose.Schema(
+        {
+            name: String,
+            activeStatus: Boolean,
+            createdAt: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        },
+        { timestamps: true }
+    )
+    tagSchema.method("toJSON", function () {
+        const { __v, _id, ...object } = this.toObject();
+        object.id = _id;
+        return object;
+    });
+    const tag = mongoose.model("Tag", tagSchema);
+    return tag;
+}
