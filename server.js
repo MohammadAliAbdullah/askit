@@ -18,20 +18,6 @@ db.mongoose.connect(db.url, {
   .then(() => { console.log('connection successfull') })
   .catch(() => { console.log('connection Failed') })
  
-// // User model
-// const User = mongoose.model('User', {
-//   name: { type: String },
-//   age: { type: Number }
-// });
-
-// User.estimatedDocumentCount(function (err, count) {
-//   if (err){
-//       console.log(err) 
-//   }else{ 
-//       console.log("Estimated Count :", count)
-//   }
-// });
-
 // listen port 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
