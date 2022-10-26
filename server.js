@@ -17,7 +17,10 @@ db.mongoose.connect(db.url, {
 })
   .then(() => { console.log('connection successfull') })
   .catch(() => { console.log('connection Failed') })
- 
+ const auth = require('./api/controllers/AuthController');
+// link with route
+// app.post('/api/signup', auth.signin);
+require('./api/routes')(app);
 // listen port 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

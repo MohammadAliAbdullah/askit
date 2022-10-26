@@ -4,7 +4,7 @@ module.exports = (mongoose) => {
         {
             name: String,
             activeStatus: Boolean,
-            createdAt: {
+            createdBy: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User"
             }

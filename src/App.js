@@ -1422,7 +1422,7 @@ function App() {
               </div>{/* End top-footer */}
               <div className="bottom-footer">
                 <div className="the-main-container">
-                  <p className="credits">© 2022 Discy. All Rights Reserved<br />With Love by <a href="https://2code.info/" target="_blank">2code</a></p>
+                  <p className="credits">© 2022 Discy. All Rights Reserved<br />With Love by <a href="#">Mohammad Ali Abdullah</a></p>
                 </div>
               </div>
             </div>
@@ -1432,7 +1432,6 @@ function App() {
         <div className="dark-light-switcher dark-light-switcher-2 dark-switcher">
           <input type="checkbox" className="switcher-dark switcher-dark-checked" /><span /></div>
       </div>
-
     </div>
   );
 }

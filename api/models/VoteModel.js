@@ -9,7 +9,7 @@ module.exports = (mongoose) => {
             },
             voteStatus: {type: String, require: true},
             activeStatus: Boolean,
-            createdAt: {
+            createdBy: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
                 require: true
