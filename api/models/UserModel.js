@@ -7,17 +7,18 @@ module.exports = (mongoose) => {
             username: { type: String, unique: true, require: true },
             email: { type: String, unique: true, require: true },
             password: { type: String, require: true },
+            activeStatus: Boolean,
+            createdBy: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            },
             roles: [
                 {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "Role"
                 }
             ],
-            activeStatus: Boolean,
-            createdBy: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User"
-            }
+
         },
         { timestamps: true }
     )
