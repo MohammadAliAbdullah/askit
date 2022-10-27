@@ -18,7 +18,6 @@ module.exports = (mongoose) => {
                     ref: "Role"
                 }
             ],
-
         },
         { timestamps: true }
     )

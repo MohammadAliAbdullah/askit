@@ -15,22 +15,19 @@ exports.signup = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        activeStatus: req.body.activeStatus, 
+        activeStatus: req.body.activeStatus,
         createdBy: req.body.createdBy, 
     });
-    console.log(user);
-    /* 
-        {
-        firstname: 'firstname',
-        lastname: 'lastname',
-        username: 'username',
-        email: 'email',
-        password: '$2a$08$QVdmhHxBDis4lfihvRFByOwOsJMWptYaOlSIThxaWqyzcZ75PA1ce',
-        roles: [],
-        _id: new ObjectId("635970988dda2e210fbadf59")
-        }
-    */
-    // user.save(user);
+    // console.log(user);
+    // insert data
+    user.save(user)
+        .then((data) => { res.send(data); })
+        .catch((err) => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the User."
+            });
+        });
 }
 
 exports.signin = (req, res) => {
