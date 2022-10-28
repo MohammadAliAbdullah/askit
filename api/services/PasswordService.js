@@ -12,6 +12,16 @@ exports.hashPassword = (password) => {
     }
 }
 
+exports.checkPassword = (password, passwordHash) => {
+    try {
+        const validityCheck = bcrypt.compareSync(password, passwordHash);
+        return validityCheck;
+    } catch (err) {
+        // throw new AppError(err.message);
+        console.log(err);
+    }
+}
+
 // const hashPassword = async password => {
 //     try {
 //         const salt = await bcrypt.genSalt(12);

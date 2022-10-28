@@ -1,6 +1,7 @@
 const db = require('../models');
 const password = require('../services/PasswordService');
 const mail = require('../services/MailService');
+const validEmail = require('../utils/MailValidation');
 const User = db.user;
 const Role = db.role;
 // jwt token
@@ -37,5 +38,30 @@ exports.signup = (req, res) => {
 }
 
 exports.signin = (req, res) => {
-    console.log(res);
+    const isEmail = validEmail.isEmailValid(req.body.username);
+    const find = isEmail ? { email: req.body.username } : { username: req.body.username };
+    User.findOne(find)
+        .then((data) => {
+            try {
+                // match password 
+                const valid = password.checkPassword(req.body.password, data.password);
+                if (!valid) {
+                    throw new Error("Incorrect email or password", 401);
+                }
+                // const accessToken = TokenService.createAccessToken(user);
+                // const refreshTokenHash = TokenService.createRefreshToken(user);
+                // const refreshToken = TokenService.addRefreshTokenUser(user,refreshTokenHash);
+                res.send(data);
+            } catch (err) {
+                res.status(401).send({
+                    message: err.message || "Some error occurred while creating the User."
+                });
+            }
+        })
+        .catch((error) => {
+            res.status(500).send({
+                message: error.message || "Some error occurred while creating the User."
+            });
+        });
+
 }
