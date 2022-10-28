@@ -1,13 +1,10 @@
 const db = require('../models');
 const password = require('../services/PasswordService');
+const mail = require('../services/MailService');
 const User = db.user;
 const Role = db.role;
-// console.log(db);
-
 // jwt token
 const jwt = require('jsonwebtoken');
-// bcryptjs
-const bcrypt = require('bcryptjs');
 
 exports.signup = (req, res) => {
     const user = new User({
@@ -15,18 +12,26 @@ exports.signup = (req, res) => {
         lastname: req.body.lastname,
         username: req.body.username,
         email: req.body.email,
-        password:  password.hashPassword(req.body.password),// bcrypt.hashSync(req.body.password, 8),
+        password: password.hashPassword(req.body.password),
         activeStatus: req.body.activeStatus,
-        createdBy: req.body.createdBy, 
+        createdBy: req.body.createdBy,
     });
-    // console.log(user);
     // insert data
     user.save(user)
-        .then((data) => { res.send(data); })
+        .then((data) => {
+            if (data) {
+                // data insert after send mail user email
+                const send = mail.mailSend(data.email);
+                res.send(data);
+            } else {
+                res.status(500).send({
+                    message: err.message || "Some error occurred while creating the User."
+                });
+            }
+        })
         .catch((err) => {
             res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating the User."
+                message: err.message || "Some error occurred while creating the User."
             });
         });
 }
