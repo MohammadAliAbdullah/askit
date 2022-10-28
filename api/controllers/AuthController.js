@@ -1,4 +1,5 @@
 const db = require('../models');
+const password = require('../services/PasswordService');
 const User = db.user;
 const Role = db.role;
 // console.log(db);
@@ -14,7 +15,7 @@ exports.signup = (req, res) => {
         lastname: req.body.lastname,
         username: req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8),
+        password:  password.hashPassword(req.body.password),// bcrypt.hashSync(req.body.password, 8),
         activeStatus: req.body.activeStatus,
         createdBy: req.body.createdBy, 
     });
