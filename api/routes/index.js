@@ -1,6 +1,6 @@
 var router = require("express").Router();
 const auth = require('../controllers/AuthController');
-const duplicate = require('../middlewares/VerifyDuplicateUsernameOrEmailMiddleware');
+const duplicate = require('../middlewares/VerifyDuplicateEmailMiddleware');
 module.exports = (app) => {
     router.post('/signup', [duplicate.duplicateUser], auth.signup);
     router.post('/signin', auth.signin);
