@@ -1,6 +1,5 @@
-const { Error } = require('mongoose');
-const db = require('../models');
 const validEmail = require('../utils/MailValidation');
+const db = require('../models');
 const User = db.user;
 
 exports.duplicateUser = (req, res, next) => {
