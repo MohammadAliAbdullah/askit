@@ -2,6 +2,7 @@ const db = require('../models');
 const password = require('../services/PasswordService');
 const mail = require('../services/MailService');
 const validEmail = require('../utils/MailValidation');
+const TokenService = require('../services/TokenService');
 const User = db.user;
 const Role = db.role;
 // jwt token
@@ -41,27 +42,34 @@ exports.signin = (req, res) => {
     const isEmail = validEmail.isEmailValid(req.body.username);
     const find = isEmail ? { email: req.body.username } : { username: req.body.username };
     User.findOne(find)
-        .then((data) => {
+        .populate("roles", "-__v")
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
+
             try {
                 // match password 
-                const valid = password.checkPassword(req.body.password, data.password);
+                const valid = password.checkPassword(req.body.password, user.password);
                 if (!valid) {
-                    throw new Error("Incorrect email or password", 401);
+                    return res.status(401).send({
+                        accessToken: null,
+                        message: "Invalid Password!"
+                    });
                 }
-                // const accessToken = TokenService.createAccessToken(user);
-                // const refreshTokenHash = TokenService.createRefreshToken(user);
-                // const refreshToken = TokenService.addRefreshTokenUser(user,refreshTokenHash);
-                res.send(data);
+                const accessToken = TokenService.createAccessToken(user);
+                const refreshTokenHash = TokenService.createRefreshToken(user);
+                // const refreshToken = TokenService.addRefreshTokenUser(user, refreshTokenHash);
+                res.send(user);
             } catch (err) {
                 res.status(401).send({
                     message: err.message || "Some error occurred while creating the User."
                 });
             }
-        })
-        .catch((error) => {
-            res.status(500).send({
-                message: error.message || "Some error occurred while creating the User."
-            });
         });
 
 }
