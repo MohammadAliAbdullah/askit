@@ -1,5 +1,11 @@
 module.exports = (mongoose) => {
     //User Schema
+    const refreshTokens = mongoose.Schema({
+        token: {
+            type: String,
+            required: true
+        }
+    });
     var userSchema = mongoose.Schema(
         {
             firstname: { type: String, require: true },
@@ -18,6 +24,7 @@ module.exports = (mongoose) => {
                     ref: "Role"
                 }
             ],
+            refreshTokens: [refreshTokens]
         },
         { timestamps: true }
     )

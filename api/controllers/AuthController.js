@@ -63,8 +63,17 @@ exports.signin = (req, res) => {
                 }
                 const accessToken = TokenService.createAccessToken(user);
                 const refreshTokenHash = TokenService.createRefreshToken(user);
-                // const refreshToken = TokenService.addRefreshTokenUser(user, refreshTokenHash);
-                res.send(user);
+                const refreshToken = TokenService.addRefreshTokenUser(user, refreshTokenHash);
+                res.json({
+                    accessToken,
+                    refreshToken,
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        username: user.username
+                    }
+                });
             } catch (err) {
                 res.status(401).send({
                     message: err.message || "Some error occurred while creating the User."
@@ -73,3 +82,39 @@ exports.signin = (req, res) => {
         });
 
 }
+
+exports.refreshTokens = (req, res) => {
+    const refreshTokenRequest = req.body.refreshToken;
+
+    const verifyData = TokenService.verifyRefreshToken(refreshTokenRequest);
+
+    if (!verifyData) {
+        throw new Error("Refresh token invalid or expired", 400);
+    }
+
+    const user = User.findOne({ _id: verifyData.id });
+    const isValid = TokenService.checkRefreshTokenUser(user, refreshTokenRequest);
+
+    if (!isValid) {
+        throw new Error("Refresh token invalid or expired", 400);
+    }
+
+    TokenService.removeRefreshTokenUser(user, refreshTokenRequest);
+
+    const accessToken = TokenService.createAccessToken(user);
+    const refreshTokenHash = TokenService.createRefreshToken(user);
+    const refreshToken = TokenService.addRefreshTokenUser(user, refreshTokenHash);
+    res.json({ accessToken, refreshToken });
+}
+
+exports.logout = (req, res, next) => {
+    const user = User.findOne({ _id: req.userId });
+    if (!user) {
+        throw new Error("UserId not found in request", 401);
+    }
+
+    user.refreshTokens = [];
+    user.save();
+    res.json({ status: "success" });
+}
+

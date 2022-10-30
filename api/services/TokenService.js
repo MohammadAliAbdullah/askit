@@ -14,7 +14,7 @@ const sign = (playload, secretToken, options) => {
 exports.createAccessToken = (user) => {
     try {
         const payload = {
-            id: user._id
+            id: user.id
         };
 
         const options = {
@@ -32,28 +32,27 @@ exports.createAccessToken = (user) => {
 exports.createRefreshToken = (user) => {
     try {
         const payload = {
-            id: user._id
+            id: user.id
         };
 
         const options = {
             algorithm: "HS512",
-            subject: user._id.toString(),
+            subject: user.id.toString(),
             expiresIn: config.expireRefresh
         };
-
         const token = sign(payload, config.secretRefresh, options);
         return token;
     } catch (err) {
         throw new Error(err.message);
     }
 }
-// not complete
 exports.addRefreshTokenUser = (user, token) => {
+    console.log(user.refreshTokens);
+
     try {
         if (user.refreshTokens.length >= config.countTokenLimit) {
             user.refreshTokens = [];
         }
-
         const objectId = mongoose.Types.ObjectId();
         user.refreshTokens.push({ _id: objectId, token });
         user.save();
@@ -63,3 +62,12 @@ exports.addRefreshTokenUser = (user, token) => {
         throw new Error(err.message);
     }
 }
+exports.verifyRefreshToken = (token) => {
+    try {
+        const refreshTokenHash = token.split("::")[1];
+        const data = jwt.verify(refreshTokenHash, config.secretRefresh);
+        return data;
+    } catch (err) {
+        return false;
+    }
+};
