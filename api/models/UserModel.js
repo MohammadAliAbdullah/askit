@@ -10,20 +10,18 @@ module.exports = (mongoose) => {
         {
             firstname: { type: String, require: true },
             lastname: { type: String, require: true },
-            username: { type: String, unique: true, require: true },
+            username: { type: String, unique: true },
             email: { type: String, unique: true, require: true },
             password: { type: String, require: true },
+            role: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Role"
+            },
             activeStatus: Boolean,
             createdBy: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User"
             },
-            roles: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Role"
-                }
-            ],
             refreshTokens: [refreshTokens]
         },
         { timestamps: true }

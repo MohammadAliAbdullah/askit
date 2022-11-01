@@ -13,7 +13,7 @@ const db = require('./api/models');
 db.mongoose.connect(db.url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  // useFindAndModify: false 
+  // useFindAndModify: true 
 })
   .then(() => { console.log('connection successfull') })
   .catch(() => { console.log('connection Failed') })

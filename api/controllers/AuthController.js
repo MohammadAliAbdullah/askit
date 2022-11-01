@@ -15,6 +15,7 @@ exports.signup = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: password.hashPassword(req.body.password),
+        role: req.body.role,
         activeStatus: req.body.activeStatus,
         createdBy: req.body.createdBy,
     });
