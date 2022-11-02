@@ -47,7 +47,6 @@ exports.createRefreshToken = (user) => {
     }
 }
 exports.addRefreshTokenUser = (user, token) => {
-    console.log(user.refreshTokens);
 
     try {
         if (user.refreshTokens.length >= config.countTokenLimit) {

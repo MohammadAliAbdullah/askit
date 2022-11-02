@@ -42,9 +42,11 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
     const isEmail = validEmail.isEmailValid(req.body.username);
     const find = isEmail ? { email: req.body.username } : { username: req.body.username };
+    // res.send(req.body);
     User.findOne(find)
-        .populate("roles", "-__v")
+        .populate("role", "-__v")
         .exec((err, user) => {
+
             if (err) {
                 res.status(500).send({ message: err });
                 return;
@@ -52,7 +54,6 @@ exports.signin = (req, res) => {
             if (!user) {
                 return res.status(404).send({ message: "User Not found." });
             }
-
             try {
                 // match password 
                 const valid = password.checkPassword(req.body.password, user.password);
@@ -66,14 +67,14 @@ exports.signin = (req, res) => {
                 const refreshTokenHash = TokenService.createRefreshToken(user);
                 const refreshToken = TokenService.addRefreshTokenUser(user, refreshTokenHash);
                 res.json({
-                    accessToken,
-                    refreshToken,
                     user: {
                         id: user.id,
                         name: user.name,
                         email: user.email,
                         username: user.username
-                    }
+                    },
+                    accessToken,
+                    refreshToken
                 });
             } catch (err) {
                 res.status(401).send({
@@ -86,7 +87,6 @@ exports.signin = (req, res) => {
 
 exports.refreshTokens = (req, res) => {
     const refreshTokenRequest = req.body.refreshToken;
-
     const verifyData = TokenService.verifyRefreshToken(refreshTokenRequest);
 
     if (!verifyData) {
@@ -109,13 +109,18 @@ exports.refreshTokens = (req, res) => {
 }
 
 exports.logout = (req, res, next) => {
-    const user = User.findOne({ _id: req.userId });
-    if (!user) {
-        throw new Error("UserId not found in request", 401);
-    }
-
-    user.refreshTokens = [];
-    user.save();
-    res.json({ status: "success" });
+    User.findOne({ _id: req.body.userId })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            if (!user) {
+                throw new Error("UserId not found in request", 401);
+            }
+            user.refreshTokens = [];
+            user.save();
+            res.json({ status: "success" });
+        });
 }
 
