@@ -85,29 +85,6 @@ exports.signin = (req, res) => {
 
 }
 
-exports.refreshTokens = (req, res) => {
-    const refreshTokenRequest = req.body.refreshToken;
-    const verifyData = TokenService.verifyRefreshToken(refreshTokenRequest);
-
-    if (!verifyData) {
-        throw new Error("Refresh token invalid or expired", 400);
-    }
-
-    const user = User.findOne({ _id: verifyData.id });
-    const isValid = TokenService.checkRefreshTokenUser(user, refreshTokenRequest);
-
-    if (!isValid) {
-        throw new Error("Refresh token invalid or expired", 400);
-    }
-
-    TokenService.removeRefreshTokenUser(user, refreshTokenRequest);
-
-    const accessToken = TokenService.createAccessToken(user);
-    const refreshTokenHash = TokenService.createRefreshToken(user);
-    const refreshToken = TokenService.addRefreshTokenUser(user, refreshTokenHash);
-    res.json({ accessToken, refreshToken });
-}
-
 exports.logout = (req, res, next) => {
     User.findOne({ _id: req.body.userId })
         .exec((err, user) => {
@@ -123,4 +100,30 @@ exports.logout = (req, res, next) => {
             res.json({ status: "success" });
         });
 }
+exports.refreshTokens = (req, res) => {
+    // res.json({requestBody: req.body}) 
+    const refreshTokenRequest = req.body.refreshToken;
+    const verifyData = TokenService.verifyRefreshToken(refreshTokenRequest);
 
+    if (!verifyData) {
+        // throw new Error("Refresh token invalid or expired", 400);
+        res.status(400).send({ message: "Refresh token invalid or expired" });
+    }
+
+    User.findOne({ _id: verifyData.id })
+        .exec((err, user) => {
+            const isValid = TokenService.checkRefreshTokenUser(user, refreshTokenRequest);
+
+            if (!isValid) {
+                // throw new Error("Refresh token invalid or expired", 400);
+                res.status(400).send({ message: "Refresh token invalid" });
+            }
+            TokenService.removeRefreshTokenUser(user, refreshTokenRequest);
+
+            const accessToken = TokenService.createAccessToken(user);
+            const refreshTokenHash = TokenService.createRefreshToken(user);
+            const refreshToken = TokenService.addRefreshTokenUser(user, refreshTokenHash);
+
+            res.json({ accessToken, refreshToken });
+        });
+}

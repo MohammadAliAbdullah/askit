@@ -62,11 +62,43 @@ exports.addRefreshTokenUser = (user, token) => {
     }
 }
 exports.verifyRefreshToken = (token) => {
+
+    // return false;
     try {
         const refreshTokenHash = token.split("::")[1];
         const data = jwt.verify(refreshTokenHash, config.secretRefresh);
+        console.log(data);
         return data;
     } catch (err) {
         return false;
     }
 };
+
+exports.checkRefreshTokenUser = (user, token) => {
+    try {
+      const refreshTokenId = token.split("::")[0];
+  
+      const isValid = user.refreshTokens.findOne(refreshToken => refreshToken._id.toString() === refreshTokenId.toString());
+  
+      return !!isValid;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  exports.removeRefreshTokenUser = (user, token) => {
+    try {
+      const refreshTokenId = token.split("::")[0];
+  
+      const refreshTokensFiltered = user.refreshTokens.filter(refreshToken => {
+        return refreshToken._id.toString() !== refreshTokenId.toString();
+      });
+  
+      user.refreshTokens = refreshTokensFiltered;
+      user.save();
+  
+      return true;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
