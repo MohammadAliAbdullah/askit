@@ -76,29 +76,58 @@ exports.verifyRefreshToken = (token) => {
 
 exports.checkRefreshTokenUser = (user, token) => {
     try {
-      const refreshTokenId = token.split("::")[0];
-  
-      const isValid = user.refreshTokens.findOne(refreshToken => refreshToken._id.toString() === refreshTokenId.toString());
-  
-      return !!isValid;
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
+        const refreshTokenId = token.split("::")[0];
 
-  exports.removeRefreshTokenUser = (user, token) => {
-    try {
-      const refreshTokenId = token.split("::")[0];
-  
-      const refreshTokensFiltered = user.refreshTokens.filter(refreshToken => {
-        return refreshToken._id.toString() !== refreshTokenId.toString();
-      });
-  
-      user.refreshTokens = refreshTokensFiltered;
-      user.save();
-  
-      return true;
+        const isValid = user.refreshTokens.findOne(refreshToken => refreshToken._id.toString() === refreshTokenId.toString());
+
+        return !!isValid;
     } catch (err) {
-      throw new Error(err.message);
+        throw new Error(err.message);
     }
-  };
+};
+
+exports.removeRefreshTokenUser = (user, token) => {
+    try {
+        const refreshTokenId = token.split("::")[0];
+
+        const refreshTokensFiltered = user.refreshTokens.filter(refreshToken => {
+            return refreshToken._id.toString() !== refreshTokenId.toString();
+        });
+
+        user.refreshTokens = refreshTokensFiltered;
+        user.save();
+
+        return true;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
+
+exports.createRestorePasswordToken = user => {
+    try {
+        const payload = {
+            id: user._id
+        };
+
+        const options = {
+            algorithm: "HS512",
+            subject: user._id.toString(),
+            expiresIn: config.expireRestore
+        };
+
+        const token = sign(payload, config.secretRestore, options);
+
+        return token;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
+
+exports.verifyRestorePasswordToken = token => {
+    try {
+        const data = jwt.verify(token, config.secretRestore);
+        return data;
+    } catch (err) {
+        return false;
+    }
+};

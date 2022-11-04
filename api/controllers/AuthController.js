@@ -127,3 +127,40 @@ exports.refreshTokens = (req, res) => {
             res.json({ accessToken, refreshToken });
         });
 }
+// restore Password
+exports.restorePassword = (req, res, next) => {
+    const isEmail = validEmail.isEmailValid(req.body.username);
+    const find = isEmail ? { email: req.body.username } : { username: req.body.username };
+    User.findOne(find)
+        .exec((error, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
+            const token = TokenService.createRestorePasswordToken(user);
+            // send mail
+            // subject: "Restore password"
+            res.json({ status: "success" });
+        });
+}
+
+exports.confirmRestorePassword = (req, res, next) => {
+    const tokenRequest = req.body.token; // try
+    const verifyData = TokenService.verifyRestorePasswordToken(tokenRequest);
+    if (!verifyData) {
+        throw new Error("Refresh token invalid or expired", 400);
+    }
+
+    User.findOne({ _id: verifyData.id }).exec((error, user) => {
+        const password = randomize.generateString(12);
+        user.password = password.hashPassword(password);
+        user.save();
+
+        // send mail
+        // subject: "New password"
+        res.json({ status: "success" });
+    });
+}
