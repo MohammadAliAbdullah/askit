@@ -131,3 +131,13 @@ exports.verifyRestorePasswordToken = token => {
         return false;
     }
 };
+// 
+exports.verifyAccessToken = token => {
+    try {
+      const data = jwt.verify(token, config.secretAccess);
+  
+      return data;
+    } catch (err) {
+      return false;
+    }
+  };
